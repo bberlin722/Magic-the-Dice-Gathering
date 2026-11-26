@@ -15,7 +15,8 @@ A 3D dice-deck dueling game for 2–4 players that runs in the browser. Build a 
 ## Multiplayer details
 
 - The host's browser runs the game rules. Every player sees the table from their own seat.
-- Rolling and rerolling happen at the same time for everyone. Each player gets only their own hand of cards; the other players' cards are sent as blanks.
+- Rolling and rerolling happen at the same time for everyone. In the shop phase everyone buys dice and upgrades at the same time, and initiative order only decides who picks market cards first.
+- In the attack phase you can drag an attack die or one of your creatures onto a rival or their creature, or use the + / − / All buttons beside each target. Each player gets only their own hand of cards; the other players' cards are sent as blanks.
 - Players can only act on their own dice and cards.
 - If a player disconnects in the lobby, their seat opens up. If they drop mid-game, a bot plays for them until they come back with **Rejoin room**. A seat left empty for 45 seconds can be taken by a new player.
 - The host's game is saved in their browser, so a host who drops out can rejoin and pick up where the game left off.

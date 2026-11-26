@@ -201,6 +201,32 @@ body.casting .mini{touch-action:none}
 #toast{position:fixed;left:50%;top:100px;transform:translateX(-50%);z-index:15;background:var(--bone);color:#2a2116;padding:9px 15px;border-radius:999px;font-weight:700;font-size:15px;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center}
 #toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){.wait i{animation:none}.die{transition:none}}
+#me{position:fixed;left:10px;top:calc(env(safe-area-inset-top) + 92px);z-index:6;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+#me[hidden]{display:none}
+.mev{display:flex;align-items:center;gap:8px;min-width:132px;padding:7px 12px 7px 8px;border-radius:14px;background:rgba(8,15,12,.9);border:2px solid var(--line);box-shadow:0 6px 16px rgba(0,0,0,.45)}
+.mev img{width:30px;height:30px;flex:none}
+.mev b{display:block;font:800 28px/1 'Alegreya Sans',sans-serif;font-variant-numeric:tabular-nums;color:#fff}
+.mev small{display:block;font-size:13px;color:var(--mute);font-weight:700;line-height:1.1}
+.mev.hp{border-color:#3fbf80}.mev.gd{border-color:#e9b640}.mev.mn{border-color:#a77bff}
+.mev .hb{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.14);margin-top:4px;overflow:hidden;width:72px}.mev .hb i{display:block;height:100%;background:#3fbf80}
+.mev.low{border-color:#ff5a5a;animation:p .8s infinite alternate}.mev.low .hb i{background:#ff5a5a}
+@media(max-width:600px){#me{flex-direction:row;left:8px;right:8px;justify-content:center;top:calc(env(safe-area-inset-top) + 84px)}.mev{min-width:0;flex:1;max-width:124px;padding:5px 8px;gap:6px}.mev img{width:22px;height:22px}.mev b{font-size:22px}.mev small{font-size:11px}.mev .hb{width:100%}}
+@media(prefers-reduced-motion:reduce){.mev.low{animation:none}}
+.apanel{width:min(470px,94vw);max-height:32vh;overflow-y:auto;background:rgba(8,15,12,.93);border:1px solid var(--line);border-radius:14px;padding:4px 10px 6px;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.apanel .ah{display:flex;align-items:center;gap:6px;padding:6px 0 4px;font-weight:800;font-size:15px;color:var(--bone)}
+.apanel .tl{gap:6px}.apanel .tl .grow{font-size:15px}.apanel .tl.sub .grow{padding-left:18px;color:var(--mute)}
+.apanel .pm{width:42px;height:42px}.apanel .pm.all{width:auto;padding:0 10px;font-size:14px}
+.apanel .tl .amt{font-size:20px;color:#fff}
+.apanel .cr{color:#d6c2ff}
+.atkleft{display:inline-flex;align-items:center;gap:6px;font:800 20px/1 'Alegreya Sans',sans-serif;color:#fff;background:#c92c3f;border-radius:999px;padding:7px 14px;border:2px solid #e0485a;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.atkleft img{width:20px;height:20px}
+#apanel{position:fixed;right:44px;top:calc(env(safe-area-inset-top) + 92px);z-index:7;width:min(360px,calc(100vw - 20px));max-height:calc(100vh - 230px - var(--hh))}
+#apanel[hidden]{display:none}
+@media(max-width:700px){#apanel{left:10px;right:10px;width:auto;top:calc(env(safe-area-inset-top) + 132px);max-height:38vh}}
+#arrow{position:fixed;inset:0;width:100%;height:100%;z-index:9;pointer-events:none}
+#arrow[hidden]{display:none}
+#alab{position:fixed;z-index:10;pointer-events:none;transform:translate(-50%,-150%);background:rgba(8,15,12,.92);border:2px solid var(--gold);color:var(--gold);font-weight:800;font-size:14px;padding:4px 10px;border-radius:999px;white-space:nowrap}
+#alab[hidden]{display:none}
 @media(min-width:900px){#hand{right:500px;background:none}body.hashand #sheet{bottom:16px;max-height:calc(100vh - 140px)}#sheet{left:auto;right:16px;bottom:16px;width:460px;max-height:calc(100vh - 140px);border-radius:18px;border:1px solid var(--line)}.card{width:220px}}
 </style>
 </head>
@@ -213,6 +239,10 @@ body.casting .mini{touch-action:none}
 <div id="drop" hidden><span>Release to cast</span></div>
 <div id="modal"></div>
 <div id="toast"></div>
+<div id="me" hidden></div>
+<div id="apanel" class="apanel" hidden></div>
+<svg id="arrow" hidden aria-hidden="true"><defs><marker id="ahd" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffd36b"/></marker></defs><line id="aln" stroke="#ffd36b" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 12" marker-end="url(#ahd)"/></svg>
+<div id="alab" hidden></div>
 <div id="hand" hidden></div>
 <button id="gbtn" data-act="guide" aria-label="Show turn guide" aria-expanded="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="#f1e6cc" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
 <aside id="guide" aria-label="Turn guide" aria-hidden="true"><div class="ghd"><h3>Turn guide</h3><button class="btn sm" data-act="guide">Close</button></div><div id="gbody"></div></aside>
@@ -262,7 +292,7 @@ body.casting .mini{touch-action:none}
         <li><b>Attack.</b> Split your attack between rival players and their active creatures. A player's active creatures absorb all damage aimed at that player, so kill them first. Each player's defense blocks incoming damage for them and their creatures. Then surviving creatures strike.</li>
         <li><b>Gold.</b> Collect rolled gold plus 1, and a bounty for every creature you land the killing blow on.</li>
         <li><b>Initiative.</b> Everyone rolls their initiative die to set the shopping order, highest first. Before you roll, you may pay gold to upgrade it: each upgrade adds +1 to every face (max +3). You can also buy upgrades in the shop.</li>
-        <li><b>Buy.</b> In initiative order, each player shops in turn: new dice (up to 12), die face upgrades, initiative upgrades, or face-up shop cards. Three new cards join the shop every round; it holds at most six, and the oldest leave first.</li>
+        <li><b>Buy.</b> Everyone shops at the same time for new dice (up to 12), die face upgrades and initiative upgrades. Initiative order only decides who picks face-up market cards first: on your card pick, buy cards or pass the pick on. Three new cards join the shop every round; it holds at most six, and the oldest leave first.</li>
       </ol>
       <p>Potions and healing are one use: they go to the <b>exhaust</b> pile (flame mark). Creatures that die are exhausted; creature cards swapped out of the shop or discarded go to the discard pile and get reshuffled. Everyone starts with 25 HP and a Guardian Totem. From round 20 the arena's fury burns every player for 1 more damage each round, so every duel ends. Last duelist standing wins.</p>
     </details>
@@ -317,7 +347,7 @@ const price=k=>card(k).m+1;
 
 let S=null,H=null;
 const newState=()=>({v:0,ph:'lobby',r:0,code:'',P:[],mk:[],dk:0,dc:0,ex:0,lg:[],rep:[],fp:0,w:-1,ack:{},bo:[],bt:0});
-const newHost=()=>({deck:[],disc:[],sel:{},asg:{},mods:{},spent:{},bought:false});
+const newHost=()=>({deck:[],disc:[],sel:{},asg:{},ct:{},mods:{},spent:{},bought:false});
 const MOD0=()=>({am:1,dm:1,gm:1,fa:0,fd:0,fg:0});
 const BADCH=new RegExp('['+[[0,31],[127,159],[173,173],[8203,8207],[8232,8238],[8288,8292],[65279,65279]].map(([a,b])=>String.fromCharCode(a)+'-'+String.fromCharCode(b)).join('')+']','g');
 const clean=n=>String(n||'').replace(BADCH,'').trim().slice(0,14)||'Duelist';
@@ -326,18 +356,19 @@ function log(t){S.lg.push(t);while(S.lg.length>6)S.lg.shift()}
 function drawCard(){if(!H.deck.length&&H.disc.length){H.deck=shuffle(H.disc);H.disc=[];log('Discard pile reshuffled into the deck')}return H.deck.pop()}
 function counts(){S.dk=H.deck.length;S.dc=H.disc.length}
 function nextOpp(i){const n=S.P.length;for(let k=1;k<n;k++){const j=(i+k)%n;if(S.P[j].al&&S.P[j].hp>0)return j}return -1}
-function canAct(i){const p=S.P[i];return !!p&&p.al&&!p.rd&&S.ph!=='lobby'&&S.ph!=='over'&&(S.ph!=='buy'||S.bo[S.bt]===i)}
+function canAct(i){const p=S.P[i];return !!p&&p.al&&!p.rd&&S.ph!=='lobby'&&S.ph!=='over'}
+const canBot=i=>canAct(i)&&(S.ph!=='buy'||(S.bo[S.bt]===i&&!S.P[i].cp));
 function startGame(){
  H=newHost();H.deck=shuffle(DECK.slice());S.ex=0;S.w=-1;S.r=0;S.mk=[];S.rep=[];S.lg=[];
  S.P.forEach(p=>Object.assign(p,{hp:MAXHP,g:4,al:1,d:STARTER.slice(),f:[2,2,2,2,2],h:[],c:[['grd',CARDS.grd.hp,0]],rd:0,il:0,ir:0,rl:0,rr:null}));
  S.fp=rnd(S.P.length);H.bought=true;log('The duel begins!');beginRound();}
 function beginRound(){
- S.r++;H.sel={};H.asg={};H.mods={};H.spent={};
+ S.r++;H.sel={};H.asg={};H.ct={};H.mods={};H.spent={};
  const added=[];for(let n=0;n<MKADD;n++){const c=drawCard();if(!c)break;S.mk.push(c);added.push(card(c).n)}
  if(added.length)log('New in the shop: '+added.join(', '));
  const gone=[];while(S.mk.length>MAXMK){const o=S.mk.shift();H.disc.push(o);gone.push(card(o).n)}
  if(gone.length)log('Leaving the shop: '+gone.join(', '));
- S.P.forEach((p,i)=>{p.rd=p.al?0:1;p.rl=0;p.ir=0;p.c.forEach(c=>c[2]=0);H.mods[i]=MOD0();H.spent[i]=0;p.st=[0,0,0,0,0];p.ml=0});
+ S.P.forEach((p,i)=>{p.rd=p.al?0:1;p.cp=0;p.rl=0;p.ir=0;p.c.forEach(c=>c[2]=0);H.mods[i]=MOD0();H.spent[i]=0;p.st=[0,0,0,0,0];p.ml=0});
  S.ph='roll';S.bo=[];S.bt=0;counts();}
 function stats(i){const p=S.P[i],m=H.mods[i]||MOD0(),s={A:0,D:0,G:0,M:0,H:0};
  p.d.forEach((d,k)=>{const fc=face(d,p.f[k]);if(s[fc[0]]!==undefined)s[fc[0]]+=+fc[1]});
@@ -349,22 +380,27 @@ function cleanAsg(i,asg){const p=S.P[i];let left=p.st[0];const out=[];
   const a=Math.min(amt,left);left-=a;out.push([o,ci,a]);}
  if(left>0){const o=out.length?out[0][0]:nextOpp(i);if(o>=0)out.push([o,-1,left])}
  return out;}
+function cleanCt(i,ct){const out={},p=S.P[i];if(!ct||typeof ct!=='object'||Array.isArray(ct))return out;
+ for(const key of Object.keys(ct).slice(0,MAXBOARD+1)){const j=Math.floor(+key),e=ct[key];if(!(j>=0&&j<p.c.length)||!Array.isArray(e))continue;const o=Math.floor(+e[0]),ci=Math.floor(+e[1]),T=S.P[o];
+  if(!T||o===i||!T.al)continue;if(ci>=0){const c=T.c[ci];if(!c||c[2]||c[1]<=0)continue}else if(ci!==-1)continue;out[j]=[o,ci]}
+ return out}
 function apply(i,a){const p=S.P[i];if(!p||!p.al||!a||typeof a!=='object'||S.ph==='over'||S.ph==='lobby')return;
  const t=a.t;
  if(t==='ready'){if(!canAct(i))return;
   if(S.ph==='roll'){p.f=p.d.map(()=>rnd(6));p.rl=1;p.rc++;p.rr=null;stats(i);}
   if(S.ph==='reroll')H.sel[i]=[...new Set((Array.isArray(a.sel)?a.sel:[]).map(Number).filter(k=>Number.isInteger(k)&&k>=0&&k<p.d.length))];
-  if(S.ph==='attack')H.asg[i]=cleanAsg(i,a.asg);
+  if(S.ph==='attack'){H.asg[i]=cleanAsg(i,a.asg);H.ct=H.ct||{};H.ct[i]=cleanCt(i,a.ct)}
   if(S.ph==='init'){p.ir=1+rnd(6)+p.il;p.ic++;}
-  if(S.ph==='buy'){p.rd=1;nextBuyer();counts();return}
+  if(S.ph==='buy'){p.rd=1;skipBuyers();buyEnd();counts();return}
   p.rd=1;advance();return;}
  if(!canAct(i))return;
  const h=Math.floor(+a.h),k=String(a.k||'');
  if(t==='iup'&&(S.ph==='init'||S.ph==='buy'))upInit(i);
  else if(t==='cast'&&S.ph==='cast')cast(i,h,k);
- else if(S.ph==='buy'){if(t==='bd')buyDie(i,k);else if(t==='up')upgrade(i,Math.floor(+a.d),Math.floor(+a.f),String(a.ty||''));else if(t==='bc')buyCard(i,Math.floor(+a.m),k);else if(t==='dc')discard(i,h,k);}
+ else if(S.ph==='buy'){if(t==='bd')buyDie(i,k);else if(t==='up')upgrade(i,Math.floor(+a.d),Math.floor(+a.f),String(a.ty||''));else if(t==='bc'){if(S.bo[S.bt]===i&&!p.cp)buyCard(i,Math.floor(+a.m),k)}else if(t==='pass'){if(S.bo[S.bt]===i&&!p.cp){p.cp=1;log(p.n+' passes the card pick');skipBuyers()}}else if(t==='dc')discard(i,h,k);}
  counts();}
-function nextBuyer(){S.bt++;while(S.bt<S.bo.length&&!S.P[S.bo[S.bt]].al)S.bt++;if(S.bt>=S.bo.length)beginRound();}
+function skipBuyers(){while(S.bt<S.bo.length){const q=S.P[S.bo[S.bt]];if(q&&q.al&&!q.rd&&!q.cp)break;S.bt++}}
+function buyEnd(){if(S.ph==='buy'&&S.P.every(q=>!q.al||q.rd))beginRound()}
 function upInit(i){const p=S.P[i];if(p.il>=3)return false;const c=IUPC[p.il];if(p.g<c)return false;p.g-=c;p.il++;log(p.n+' upgrades their initiative die to +'+p.il);return true}
 function cast(i,h,k){const p=S.P[i];if(p.h[h]!==k)return false;const C=card(k);if(C.m>p.ml)return false;
  if(C.t==='C'){if(p.c.length>=MAXBOARD)return false;p.c.push([k,C.hp,1]);}
@@ -384,7 +420,7 @@ function advance(){if(S.P.some(p=>p.al&&!p.rd))return;const reset=()=>S.P.forEac
  else if(S.ph==='reroll'){S.P.forEach((p,i)=>{const l=H.sel[i]||[];l.forEach(k=>{p.f[k]=rnd(6)});if(l.length){p.rr=l;p.rc++}stats(i)});S.ph='cast';reset();log('Rerolls revealed');}
  else if(S.ph==='cast'){S.ph='attack';reset();}
  else if(S.ph==='attack'){resolve();if(S.ph!=='over'){S.ph='init';reset();}}
- else if(S.ph==='init'){const tb=S.P.map(()=>Math.random());S.bo=S.P.map((p,i)=>i).filter(i=>S.P[i].al).sort((a,b)=>S.P[b].ir-S.P[a].ir||S.P[a].hp-S.P[b].hp||tb[a]-tb[b]);S.bt=0;S.ph='buy';reset();log('Shop order: '+S.bo.map(i=>S.P[i].n+' ('+S.P[i].ir+')').join(', '));}
+ else if(S.ph==='init'){const tb=S.P.map(()=>Math.random());S.bo=S.P.map((p,i)=>i).filter(i=>S.P[i].al).sort((a,b)=>S.P[b].ir-S.P[a].ir||S.P[a].hp-S.P[b].hp||tb[a]-tb[b]);S.bt=0;S.ph='buy';reset();S.P.forEach(q=>q.cp=0);skipBuyers();log('Card pick order: '+S.bo.map(i=>S.P[i].n+' ('+S.P[i].ir+')').join(', '));}
  counts();}
 function resolve(){const P=S.P,n=P.length,rep=[];
  const defL=P.map(p=>p.al?p.st[1]:0),gain=P.map(()=>0);
@@ -403,7 +439,10 @@ function resolve(){const P=S.P,n=P.length,rep=[];
  for(const i of order){const as=H.asg[i]||cleanAsg(i,[]);const sum={};
   for(const [o,ci,a] of as){hit(i,P[i].n,o,ci,a);sum[o]=(sum[o]||0)+a}
   let best=-1,bv=0;for(const o in sum)if(sum[o]>bv){bv=sum[o];best=+o}tgt[i]=best;}
- for(const i of order){if(!up(i))continue;for(const c of P[i].c){const C=card(c[0]);if(c[2]||c[1]<=0||!C.a)continue;let o=tgt[i];if(o===undefined||o<0||!up(o))o=nextOpp(i);if(o>=0)hit(i,P[i].n+"'s "+C.n,o,-1,C.a)}}
+ for(const i of order){if(!up(i))continue;const want=(H.ct&&H.ct[i])||{};P[i].c.forEach((c,j)=>{const C=card(c[0]);if(c[2]||c[1]<=0||!C.a)return;let o=-1,ci=-1;const w=want[j];
+  if(w&&up(w[0])){o=w[0];ci=w[1];if(ci>=0){const tc=P[o].c[ci];if(!tc||tc[1]<=0||tc[2])ci=-1}}
+  if(o<0){o=tgt[i];if(o===undefined||o<0||!up(o))o=nextOpp(i)}
+  if(o>=0)hit(i,P[i].n+"'s "+C.n,o,ci,C.a)})}
  for(const i of order){const p=P[i];for(const c of p.c){if(c[2]||c[1]<=0)continue;const C=card(c[0]);if(C.hl&&p.hp>0){p.hp=Math.min(MAXHP,p.hp+C.hl);rep.push(C.n+' heals '+p.n+' '+C.hl)}if(C.gd)gain[i]+=C.gd}}
  if(S.r>=FURY){const fd=S.r-FURY+1;order.forEach(i=>{if(P[i].hp>0)P[i].hp-=fd});rep.push('Arena fury burns everyone for '+fd)}
  for(const i of order){const p=P[i];if(p.hp<=0)continue;const g=p.st[2]+BASEGOLD+gain[i];p.g+=g;rep.push(p.n+' gains '+g+' gold')}
@@ -445,7 +484,7 @@ const FCOL={A:'#d8453c',D:'#3f86d9',G:'#d9a521',M:'#9a63e6',H:'#2fae6f'};
 const BOTN=['Morgana','Thrask','Ysolde','Brannoc','Vesh','Oddny'];
 let PID=(()=>{const mk='p'+Math.random().toString(36).slice(2,10);try{let x=sessionStorage.getItem('mdg_pid');if(!x){x=mk;sessionStorage.setItem('mdg_pid',x)}return x}catch(e){return mk}})();
 let joinCode='',mode='home',myName='Duelist',room=null,RM=null,acts=[],aq=0,hostGone=false,seenAt={},botTimer=null;
-const U={mod:null,ah:[],dragEnd:0,sel:new Set(),asg:{},tab:'cards',upd:-1,key:'',min:false,sph:''};
+const U={mod:null,ah:[],ct:{},dused:new Set(),aHide:false,dragEnd:0,sel:new Set(),asg:{},tab:'cards',upd:-1,key:'',min:false,sph:''};
 const myIdx=()=>S?S.P.findIndex(p=>p.id===PID):-1;
 
 // ---- audio: procedural music + effects ----
@@ -598,7 +637,7 @@ function wire(host){if(host){RM.onPeers(hostPeers,()=>{toast('Lost the game room
  else{RM.onPeers(clientPeers);if(RM.onPeerLeave)RM.onPeerLeave(clientLeave)}}
 function publish(){S.v++;if(mode==='host'&&RM){trimState();RM.presence({host:1,tc:S.code,id:PID,n:clean(myName),s:S}).catch(()=>toast('Sync hiccup, retrying next move'));saveHost()}render();scheduleBots();}
 function send(a){if(!S)return;if(mode==='client'){if(hostGone){toast('Waiting for the host to reconnect');return}a.q=++aq;acts.push(a);acts=acts.slice(-12);RM.presence({tc:joinCode,acts}).catch(()=>{});}else{apply(myIdx(),a);publish();}}
-function scheduleBots(){if(mode!=='solo'&&mode!=='host')return;if(!S||S.ph==='lobby'||S.ph==='over')return;if(!S.P.some((p,i)=>p.b&&canAct(i)))return;clearTimeout(botTimer);botTimer=setTimeout(()=>{const i=S.P.findIndex((p,i)=>p.b&&canAct(i));if(i>=0){botAct(i);publish()}},(S.ph==='buy'?900:650)+rnd(500));}
+function scheduleBots(){if(mode!=='solo'&&mode!=='host')return;if(!S||S.ph==='lobby'||S.ph==='over')return;if(!S.P.some((p,i)=>p.b&&canBot(i)))return;clearTimeout(botTimer);botTimer=setTimeout(()=>{const i=S.P.findIndex((p,i)=>p.b&&canBot(i));if(i>=0){botAct(i);publish()}},(S.ph==='buy'?900:650)+rnd(500));}
 async function openRoom(code){if(room.p2p)return room.join('mdg-'+code.toLowerCase());try{return await room.join('mdg-'+code.toLowerCase())}catch(e){return room}}
 function gen(){const L='ABCDEFGHJKMNPQRSTUVWXYZ';let s='';for(let i=0;i<4;i++)s+=L[rnd(L.length)];return s}
 async function hostTable(re){if(!room)return;myName=nameIn();try{const code=re&&re.code||gen();RM=await openRoom(code);mode='host';owner={};awayAt={};seenAt={};
@@ -646,20 +685,36 @@ function leave(){if(RM){if(RM!==room&&RM.leave)RM.leave().catch(()=>{});else RM.
 // ---- UI ----
 const PHN={lobby:'Lobby',roll:'Roll',reroll:'Reroll',cast:'Cast',attack:'Attack',init:'Initiative',buy:'Buy',over:'Game over'};
 function render(){
- if(!S){$('#top').innerHTML=mode==='client'?`<div class="bar"><span class="ttl">Magic the Dice Gathering</span></div>`:'';$('#hud').innerHTML='';const c=$('#center');c.innerHTML=mode==='client'?`<h3>Joining table…</h3><p class="hint">${hostGone?'No host found at that code yet. Check the code, or wait for the host to open the table.':'Looking for the host.'}</p><div class="row end"><button class="btn" data-act="leave">Back</button></div>`:'';c.hidden=mode!=='client';renderHand();renderGuide();return}
- const lp=U.key.split('|')[0],key=S.ph+'|'+S.r;if(key!==U.key){if(S.ph!==lp)U.min=false;if(S.ph==='reroll'||S.ph==='roll')U.sel=new Set();if(S.ph==='attack'&&lp!=='attack')U.asg={};if(S.ph==='buy'&&lp!=='buy'){U.tab='cards';U.upd=-1}if(S.ph!==lp){U.ah=[];if(U.mod&&!/^(log|cr|hand)/.test(U.mod))U.mod=null}U.key=key}
+ if(!S){$('#me').hidden=true;$('#apanel').hidden=true;$('#top').innerHTML=mode==='client'?`<div class="bar"><span class="ttl">Magic the Dice Gathering</span></div>`:'';$('#hud').innerHTML='';const c=$('#center');c.innerHTML=mode==='client'?`<h3>Joining table…</h3><p class="hint">${hostGone?'No host found at that code yet. Check the code, or wait for the host to open the table.':'Looking for the host.'}</p><div class="row end"><button class="btn" data-act="leave">Back</button></div>`:'';c.hidden=mode!=='client';renderHand();renderGuide();return}
+ const lp=U.key.split('|')[0],key=S.ph+'|'+S.r;if(key!==U.key){if(S.ph!==lp)U.min=false;if(S.ph==='reroll'||S.ph==='roll')U.sel=new Set();if(S.ph==='attack'&&lp!=='attack'){U.asg={};U.ct={};U.dused=new Set();U.aHide=innerWidth<700}if(S.ph==='buy'&&lp!=='buy'){U.tab='cards';U.upd=-1}if(S.ph!==lp){U.ah=[];if(U.mod&&!/^(log|cr|hand)/.test(U.mod))U.mod=null}U.key=key}
  try{soundDiff(prevS,S)}catch(e){}prevS=JSON.parse(JSON.stringify(S));
- renderTop();renderSheet();renderHand();renderGuide();renderModal();try{sync3D()}catch(e){console.error('3D',e)}}
+ renderTop();renderMe();renderSheet();renderHand();renderGuide();renderModal();try{sync3D()}catch(e){console.error('3D',e)}}
 function renderTop(){const me=myIdx(),cur=S.ph==='buy'?S.bo[S.bt]:-1;
  const strip=S.P.map((q,i)=>`<span class="pl ${q.al||S.ph==='lobby'?'':'dead'} ${i===cur?'turn':''}"><span class="dot" style="background:${PCOL[i]}"></span><b>${esc(q.n)}${i===me?' (you)':''}</b>${q.b===1?' · bot':q.b===2?' · away':''}${S.ph!=='lobby'?` ${ic('H')}${q.hp} ${ic('G')}${q.g} · ${q.h.length} card${q.h.length===1?'':'s'}`:''}${['roll','reroll','cast','attack','init'].includes(S.ph)&&q.al&&q.rd?' <span class="rd">✓</span>':''}</span>`).join('');
  $('#top').innerHTML=`<div class="bar"><span class="ttl">Magic the Dice Gathering</span>${S.code?`<span class="chip">${esc(S.code)}</span>`:''}${S.r?`<span class="chip">R${S.r}</span>`:''}<span class="chip ph">${PHN[S.ph]||''}</span><button class="chip" data-act="leave" style="min-height:28px">Leave</button></div><div class="strip">${strip}</div>`;}
+function renderMe(){const el=$('#me'),me=myIdx(),p=me>=0?S.P[me]:null;const show=!!(p&&p.al&&S.ph!=='lobby'&&S.ph!=='over'&&mode!=='home');el.hidden=!show;if(!show){el.innerHTML='';return}
+ const rolled=S.ph!=='roll'||p.rl,mana=S.ph==='cast'?p.ml+' / '+p.st[3]:rolled?String(p.st[3]):'–',pct=Math.max(0,Math.min(100,p.hp/MAXHP*100));
+ const h=`<div class="mev hp ${p.hp<=8?'low':''}"><img src="${icon('H')}" alt=""><span><small>Health</small><b>${p.hp}</b><span class="hb"><i style="width:${pct}%"></i></span></span></div><div class="mev gd"><img src="${icon('G')}" alt=""><span><small>Gold</small><b>${p.g}</b></span></div><div class="mev mn"><img src="${icon('M')}" alt=""><span><small>${S.ph==='cast'?'Mana left':'Mana'}</small><b>${mana}</b></span></div>`;
+ if(el.innerHTML!==h)el.innerHTML=h}
+const myAttackers=p=>p.c.map((c,j)=>[c,j]).filter(([c])=>!c[2]&&c[1]>0&&card(c[0]).a>0);
+function ctName(t){const q=S.P[t[0]];if(!q)return '';return t[1]>=0&&q.c[t[1]]?card(q.c[t[1]][0]).n:q.n}
+function arow(o,ci,label,left,sub){const k=o+':'+ci,v=U.asg[k]||0;return `<div class="tl ${sub?'sub':''}"><span class="grow">${label}</span><button class="pm" data-act="asg-" data-o="${o}" data-c="${ci}" ${v?'':'disabled'} aria-label="Less attack">−</button><span class="amt">${v}</span><button class="pm" data-act="asg+" data-o="${o}" data-c="${ci}" ${left>0?'':'disabled'} aria-label="More attack">+</button><button class="pm all" data-act="asgall" data-o="${o}" data-c="${ci}" ${left>0?'':'disabled'}>All</button></div>`}
+function attackPanel(p,me,left){let h='';
+ S.P.forEach((q,o)=>{if(o===me||!q.al)return;h+=arow(o,-1,`<span class="dot" style="background:${PCOL[o]};display:inline-block;margin-right:6px"></span><b>${esc(q.n)}</b> · ${q.hp} HP`,left);
+  q.c.forEach((c,ci)=>{if(c[2]||c[1]<=0)return;h+=arow(o,ci,esc(card(c[0]).n)+' · '+c[1]+' HP',left,true)})});
+ const cr=myAttackers(p);
+ if(cr.length)h+='<div class="ah">Your creatures strike</div>'+cr.map(([c,j])=>{const C=card(c[0]),t=U.ct[j];return `<div class="tl"><span class="grow cr">${esc(C.n)} ${ic('A')}${C.a} → <b>${t?esc(ctName(t)):'your main target'}</b></span><button class="btn sm" data-act="ctnext" data-j="${j}">Change</button></div>`}).join('');
+ return `<div class="ah">${ic('A')} Aim your attack</div>${h}`}
+function ctTargets(me){const L=[null];S.P.forEach((q,o)=>{if(o===me||!q.al)return;L.push([o,-1]);q.c.forEach((c,ci)=>{if(!c[2]&&c[1]>0)L.push([o,ci])})});return L}
+function setCt(j,t){U.ah.push(['ct',j,U.ct[j]||null]);if(t)U.ct[j]=t;else delete U.ct[j];sfx('click');render()}
+function cycleCt(j){const me=myIdx(),p=S.P[me];if(!p||!p.c[j]||S.ph!=='attack'||p.rd)return;const L=ctTargets(me),cur=U.ct[j],i=L.findIndex(t=>t===null?!cur:!!cur&&t[0]===cur[0]&&t[1]===cur[1]);setCt(j,L[(i+1)%L.length])}
 function waitFor(){const w=S.P.filter(p=>p.al&&!p.rd).map(p=>esc(p.n));return w.length?`<div class="wait"><i></i>Waiting for ${w.join(', ')}</div>`:''}
 function statsHTML(p,full){return `<div class="stats"><span class="stat">${ic('M')}${full?p.ml+' / '+p.st[3]:p.st[3]} mana</span><span class="stat">${ic('A')}${p.st[0]}</span><span class="stat">${ic('D')}${p.st[1]}</span><span class="stat">${ic('G')}${p.st[2]}</span><span class="stat">${ic('H')}${p.st[4]}</span></div>`}
 function initFaces(p){return `<span class="faces" style="display:inline-flex;gap:3px">${[1,2,3,4,5,6].map(v=>`<span class="die sm"><img src="${faceURL('N'+(v+p.il))}" alt="${v+p.il}"></span>`).join('')}</span>`}
 function orderHTML(){if(!S.bo.length)return '';return `<div class="order">${S.bo.map((i,n)=>{const q=S.P[i];return `<span class="${n===S.bt?'on':''}" style="${q.al?'':'opacity:.4'}">${n+1}. <span class="dot" style="background:${PCOL[i]}"></span>${esc(q.n)} <img src="${faceURL('N'+q.ir)}" alt="rolled ${q.ir}">${n<S.bt?' ✓':''}</span>`}).join('')}</div>`}
 const sumAsg=()=>Object.values(U.asg).reduce((a,b)=>a+b,0);
 function waitTxt(){const w=S.P.filter(p=>p.al&&!p.rd).map(p=>esc(p.n));return w.length?'Waiting for '+w.join(', '):''}
-function renderSheet(){const me=myIdx(),p=S.P[me],hud=$('#hud'),ctr=$('#center');let msg='',stats='',btns='',extra='',center='';const no3d=!R3;
+function renderSheet(){const me=myIdx(),p=S.P[me],hud=$('#hud'),ctr=$('#center');let msg='',stats='',btns='',extra='',center='',side='';const no3d=!R3;
  const logB=S.rep&&S.rep.length?'<button class="btn" data-act="log">Combat log</button>':'';
  if(S.ph==='lobby'){const host=mode!=='client';
   const p2p=!!(RM&&RM.p2p),link=host&&p2p?inviteLink():'';
@@ -672,18 +727,20 @@ function renderSheet(){const me=myIdx(),p=S.P[me],hud=$('#hud'),ctr=$('#center')
   if(no3d)extra=`<div class="htray">${p.d.map((d,k)=>`<button class="die ${U.sel.has(k)?'on':''}" data-act="tog" data-k="${k}"><img src="${faceURL(face(d,p.f[k]))}" alt=""></button>`).join('')}</div>`}}
  else if(S.ph==='cast'){stats=statsHTML(p,true);if(p.rd)msg=waitTxt();else{const nc=p.h.filter(k=>castable(p,k)).length;msg=p.h.length?(nc?'Drag a glowing card up onto the table to cast it':'Nothing in your hand fits this mana'):'No cards in hand to cast';btns=`<button class="btn main" data-act="ready">Done casting</button>`}}
  else if(S.ph==='attack'){if(p.rd)msg=waitTxt();else{const atk=p.st[0],used=sumAsg();
-  msg=!atk?'No attack this round':atk>used?'Tap a rival or their creature to aim 1 attack. Hold to send all':'All attack aimed. Lock it in';
-  stats=`<span class="stat">${ic('A')} ${atk-used} of ${atk} left</span>`+Object.entries(U.asg).filter(([,n])=>n>0).map(([k,n])=>{const[o,ci]=k.split(':').map(Number),q=S.P[o];return `<span class="stat">${ic('A')}${n} → ${esc(ci>=0&&q.c[ci]?card(q.c[ci][0]).n:q.n)}</span>`}).join('');
-  btns=(used?'<button class="btn" data-act="undo">Undo</button><button class="btn" data-act="asgclr">Clear</button>':'')+'<button class="btn main" data-act="ready">Lock in attack</button>';
-  if(no3d)extra=`<div class="hbtns">${S.P.map((q,o)=>o===me||!q.al?'':`<button class="btn sm" data-act="aim" data-o="${o}" data-c="-1">${esc(q.n)}</button>`+q.c.map((c,ci)=>c[2]||c[1]<=0?'':`<button class="btn sm" data-act="aim" data-o="${o}" data-c="${ci}">${esc(card(c[0]).n)}</button>`).join('')).join('')}</div>`}}
+  const left=atk-used,crs=myAttackers(p).length;
+  msg=!atk&&!crs?'No attack this round':left>0?(no3d?'Use + and − to aim your attack':'Drag an attack die or creature onto a target, or use + and −'):'All attack aimed. Lock it in';
+  stats=`<span class="atkleft">${ic('A')} ${left} of ${atk} attack left</span>`;
+  side=U.aHide?'':attackPanel(p,me,left);
+  btns=(U.ah.length?'<button class="btn" data-act="undo">Undo</button>':'')+(used||Object.keys(U.ct).length?'<button class="btn" data-act="asgclr">Clear</button>':'')+`<button class="btn" data-act="apt">${U.aHide?'Show targets':'Hide targets'}</button>`+'<button class="btn main" data-act="ready">Lock in attack</button>';}}
  else if(S.ph==='init'){const rolled=S.P.filter(q=>q.al&&q.ir);stats=rolled.length?`<div class="order">${rolled.map(q=>`<span><span class="dot" style="background:${PCOL[S.P.indexOf(q)]}"></span>${esc(q.n)} <img src="${faceURL('N'+q.ir)}" alt="rolled ${q.ir}"></span>`).join('')}</div>`:'';
   if(p.rd){msg=waitTxt();btns=logB}else{msg='Tap your red initiative die to roll for shop order';btns=logB+(p.il<3?`<button class="btn" data-act="iup" ${p.g<IUPC[p.il]?'disabled':''}>Upgrade +${p.il+1} · ${IUPC[p.il]}g</button>`:'')+'<button class="btn gold" data-act="ready">Roll initiative</button>'}}
- else if(S.ph==='buy'){const mine=S.bo[S.bt]===me,cur=S.P[S.bo[S.bt]];stats=orderHTML();
-  msg=mine?`Your turn · ${p.g} gold. Tap shop cards on the table to buy`:(p.rd?'You’re done shopping. ':'')+esc(cur?cur.n:'')+' is shopping';
-  btns=`<button class="btn" data-act="m" data-k="shop">Cards</button><button class="btn" data-act="m" data-k="dice">Dice</button><button class="btn" data-act="m" data-k="faces">Upgrade</button>`+logB+(mine?'<button class="btn main" data-act="ready">Done shopping</button>':'');}
+ else if(S.ph==='buy'){const pick=S.bo[S.bt]===me&&!p.cp,cur=S.P[S.bo[S.bt]],cn=cur&&S.bo[S.bt]!==me?esc(cur.n)+' is picking market cards':'';stats=orderHTML();
+  msg=p.rd?'You’re done shopping. '+(cn||'Waiting for the others'):pick?`Your card pick · ${p.g} gold. Tap market cards on the table to buy, and buy dice or upgrades any time`:`Buy dice and upgrades now · ${p.g} gold`+(cn?'. '+cn:'');
+  btns=`<button class="btn" data-act="m" data-k="shop">Cards</button><button class="btn" data-act="m" data-k="dice">Dice</button><button class="btn" data-act="m" data-k="faces">Upgrade</button>`+logB+(p.rd?'':(pick?'<button class="btn gold" data-act="passc">Pass card pick</button>':'')+'<button class="btn main" data-act="ready">Done shopping</button>');}
  if(hostGone&&mode==='client')msg='The host disconnected. The game resumes if they return.';
  hud.innerHTML=center?'':(msg?`<div class="hmsg">${msg}</div>`:'')+(stats?`<div class="hstats">${stats.replace(/^<div class="stats">|<\/div>$/g,'')}</div>`:'')+extra+(btns?`<div class="hbtns">${btns}</div>`:'');
- if(ctr.innerHTML!==center)ctr.innerHTML=center;ctr.hidden=!center;}
+ if(ctr.innerHTML!==center)ctr.innerHTML=center;ctr.hidden=!center;
+ const ap=$('#apanel');if(ap.innerHTML!==side){const sc=ap.scrollTop;ap.innerHTML=side;ap.scrollTop=sc}ap.hidden=!side;}
 const castable=(p,k)=>{const C=card(k);return C.m<=p.ml&&!(C.t==='C'&&p.c.length>=MAXBOARD)};
 const roleOf=k=>{const C=card(k);return C.t==='P'?(C.am||C.fa?'A':C.dm||C.fd?'D':C.gm||C.fg?'G':'H'):C.hl?'H':C.gd?'G':C.a>=C.hp/2?'A':'D'};
 const LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -693,43 +750,43 @@ function renderHand(){const el=$('#hand'),me=myIdx(),p=S&&me>=0?S.P[me]:null;
  if(show){const cast=S.ph==='cast'&&!p.rd;
   let h=`<div class="hhd"><span>${LOCK}Your hand, hidden from rivals · <b>${p.h.length}/${MAXHAND}</b></span><span>${S.ph==='cast'?`${ic('M')} <b>${p.ml}</b> mana left`:`${ic('G')} <b>${p.g}</b> gold`}</span></div><div class="hcards">`;
   h+=p.h.map((k,i)=>{const C=card(k),can=cast&&castable(p,k);return `<button class="mini ${C.t} ${can?'can':''}" data-act="hcard" data-h="${i}" data-k="${esc(k)}" aria-label="${esc(C.n)}, ${C.m} mana"><span class="mg">${C.m}</span><span class="mn">${esc(C.n)}</span><img class="mart" src="${icon(roleOf(k))}" alt="">${C.t==='C'?`<span class="mf cr"><span class="cb a" title="Attack">${C.a}</span><span class="cb h" title="Health">${C.hp}</span></span>`:`<span class="mf">${ic('F')}1 use</span>`}${can?'<span class="mcast">Cast</span>':''}</button>`}).join('');
-  if(!p.h.length)h+='<span class="hempty">No cards yet. Buy them from the shop on your turn.</span>';
+  if(!p.h.length)h+='<span class="hempty">No cards yet. Buy them from the market on your card pick.</span>';
   const sx=el.querySelector('.hcards')?.scrollLeft||0;el.innerHTML=h+'</div>';const hc=el.querySelector('.hcards');if(hc)hc.scrollLeft=sx;}
  const hh=show?el.offsetHeight:0;document.documentElement.style.setProperty('--hh',hh+'px');}
 function openModal(k){U.mod=k;renderModal()}
 function closeModal(){U.mod=null;renderModal()}
 function mpanel(t,body){return `<div class="mpanel"><div class="mhd"><h3>${t}</h3><button class="btn sm" data-act="close">Close</button></div>${body}</div>`}
 function renderModal(){const el=$('#modal');if(!U.mod||!S){el.style.display='none';el.innerHTML='';return}
- const me=myIdx(),p=S.P[me],[k,a,b]=U.mod.split('|'),mine=S.ph==='buy'&&p&&p.al&&S.bo[S.bt]===me;let h='';
+ const me=myIdx(),p=S.P[me],[k,a,b]=U.mod.split('|'),shopOk=S.ph==='buy'&&p&&p.al&&!p.rd,mine=shopOk&&S.bo[S.bt]===me&&!p.cp;let h='';
  const one=(ck,o,acts)=>`<div class="mbox">${cardHTML(ck,o)}<div class="mact">${acts}<button class="btn" data-act="close">Close</button></div></div>`;
  if(k==='hand'){const i=+a;if(!p||p.h[i]!==b){closeModal();return}const C=card(b);let acts='';
   if(S.ph==='cast'&&!p.rd){const ok=castable(p,b);acts+=`<button class="btn main" data-act="cast" data-h="${i}" data-k="${esc(b)}" ${ok?'':'disabled'}>${ok?'Cast · '+C.m+' mana':C.m>p.ml?'Need '+C.m+' mana':'Board full'}</button>`}
-  if(mine)acts+=`<button class="btn" data-act="dc" data-h="${i}" data-k="${esc(b)}">Discard</button>`;h=one(b,{},acts)}
+  if(shopOk)acts+=`<button class="btn" data-act="dc" data-h="${i}" data-k="${esc(b)}">Discard</button>`;h=one(b,{},acts)}
  else if(k==='mk'){let mi=+a;if(S.mk[mi]!==b)mi=S.mk.indexOf(b);if(mi<0){closeModal();return}const ok=mine&&price(b)<=p.g&&p.h.length<MAXHAND;
-  h=one(b,{price:price(b)},S.ph==='buy'&&p&&p.al?`<button class="btn gold" data-act="bc" data-m="${mi}" data-k="${esc(b)}" data-x="1" ${ok?'':'disabled'}>${!mine?'Wait your turn':p.h.length>=MAXHAND?'Hand full':p.g<price(b)?'Need '+price(b)+' gold':'Buy · '+price(b)+' gold'}</button>`:'')}
+  h=one(b,{price:price(b)},S.ph==='buy'&&p&&p.al?`<button class="btn gold" data-act="bc" data-m="${mi}" data-k="${esc(b)}" data-x="1" ${ok?'':'disabled'}>${!mine?'Wait for your card pick':p.h.length>=MAXHAND?'Hand full':p.g<price(b)?'Need '+price(b)+' gold':'Buy · '+price(b)+' gold'}</button>`:'')}
  else if(k==='cr'){const q=S.P[+a],c=q&&q.c[+b];if(!c){closeModal();return}h=one(c[0],{hp:c[1],fresh:c[2]},'')}
  else if(k==='log')h=mpanel('Round '+S.r+' combat',(S.rep||[]).map(l=>`<p style="margin:4px 0">${esc(l)}</p>`).join('')||'<p class="hint">Nothing yet.</p>');
- else if(k==='shop'){if(!p){closeModal();return}h=mpanel('Shop cards · '+p.g+' gold',S.mk.length?`<div class="hand">${S.mk.map((ck,mi)=>{const ok=mine&&price(ck)<=p.g&&p.h.length<MAXHAND;return cardHTML(ck,{price:price(ck),cls:ok?'can':'',act:`<div class="act"><button class="btn" data-act="bc" data-m="${mi}" data-k="${esc(ck)}" ${ok?'':'disabled'}>${!mine?'Wait your turn':p.h.length>=MAXHAND?'Hand full':'Buy · '+price(ck)+' gold'}</button></div>`})}).join('')}</div>`:'<p class="hint">The shop is empty. Three new cards arrive next round.</p>')}
- else if(k==='dice'){if(!p){closeModal();return}h=mpanel('New dice · '+p.g+' gold',`<div class="shop">${SHOP.map(sd=>`<div class="item"><div class="grow"><div class="nm">${sd.n}</div><div class="faces">${[0,1,2,3,4,5].map(f=>`<span class="die sm"><img src="${faceURL(face(sd.f,f))}" alt=""></span>`).join('')}</div></div><button class="btn sm gold" data-act="bd" data-k="${sd.k}" ${!mine||p.g<sd.p||p.d.length>=MAXDICE?'disabled':''}>${sd.p} gold</button></div>`).join('')}
-  <div class="item"><div class="grow"><div class="nm">Initiative die ${p.il<3?'+'+p.il+' → +'+(p.il+1):'(maxed)'}</div><div class="faces">${initFaces(p)}</div></div>${p.il<3?`<button class="btn sm gold" data-act="iup" ${!mine||p.g<IUPC[p.il]?'disabled':''}>${IUPC[p.il]} gold</button>`:''}</div></div><p class="hint" style="margin-top:8px">${p.d.length}/${MAXDICE} dice${mine?'':' · you can buy on your turn'}</p>`)}
+ else if(k==='shop'){if(!p){closeModal();return}h=mpanel('Shop cards · '+p.g+' gold',S.mk.length?`<div class="hand">${S.mk.map((ck,mi)=>{const ok=mine&&price(ck)<=p.g&&p.h.length<MAXHAND;return cardHTML(ck,{price:price(ck),cls:ok?'can':'',act:`<div class="act"><button class="btn" data-act="bc" data-m="${mi}" data-k="${esc(ck)}" ${ok?'':'disabled'}>${!mine?'Wait for your card pick':p.h.length>=MAXHAND?'Hand full':'Buy · '+price(ck)+' gold'}</button></div>`})}).join('')}</div>`:'<p class="hint">The shop is empty. Three new cards arrive next round.</p>')}
+ else if(k==='dice'){if(!p){closeModal();return}h=mpanel('New dice · '+p.g+' gold',`<div class="shop">${SHOP.map(sd=>`<div class="item"><div class="grow"><div class="nm">${sd.n}</div><div class="faces">${[0,1,2,3,4,5].map(f=>`<span class="die sm"><img src="${faceURL(face(sd.f,f))}" alt=""></span>`).join('')}</div></div><button class="btn sm gold" data-act="bd" data-k="${sd.k}" ${!shopOk||p.g<sd.p||p.d.length>=MAXDICE?'disabled':''}>${sd.p} gold</button></div>`).join('')}
+  <div class="item"><div class="grow"><div class="nm">Initiative die ${p.il<3?'+'+p.il+' → +'+(p.il+1):'(maxed)'}</div><div class="faces">${initFaces(p)}</div></div>${p.il<3?`<button class="btn sm gold" data-act="iup" ${!shopOk||p.g<IUPC[p.il]?'disabled':''}>${IUPC[p.il]} gold</button>`:''}</div></div><p class="hint" style="margin-top:8px">${p.d.length}/${MAXDICE} dice${shopOk?'':' · shopping is over for you this round'}</p>`)}
  else if(k==='faces'){if(!p){closeModal();return}let body=`<p class="hint">Pick a die, then a face. Blank faces become any type at level 1; others go up a level (max 3) for ${UPC.join(' / ')} gold.</p><div class="tray">${p.d.map((d,dk)=>`<button class="die ${U.upd===dk?'on':''}" data-act="updie" data-k="${dk}"><img src="${faceURL(face(d,0))}" alt="Die ${dk+1}"></button>`).join('')}</div>`;
   if(U.upd>=0&&p.d[U.upd]){const d=p.d[U.upd];body+=`<div class="tg">${[0,1,2,3,4,5].map(f=>{const fc=face(d,f),lv=fc[0]==='-'?0:+fc[1];const im=`<span class="die sm"><img src="${faceURL(fc)}" alt=""></span>`;
    if(lv>=3)return `<div class="tl">${im}<span class="grow" style="color:var(--mute)">Maxed</span></div>`;
-   if(lv===0)return `<div class="tl">${im}<span class="grow">Blank · ${UPC[0]}g</span><span class="row" style="gap:4px">${'ADGMH'.split('').map(t=>`<button class="pm" data-act="up" data-d="${U.upd}" data-f="${f}" data-ty="${t}" ${!mine||p.g<UPC[0]?'disabled':''} aria-label="Make ${FN[t]}"><img src="${icon(t)}" style="width:22px;height:22px" alt=""></button>`).join('')}</span></div>`;
-   return `<div class="tl">${im}<span class="grow">${FN[fc[0]]} ${lv} → ${lv+1}</span><button class="btn sm" data-act="up" data-d="${U.upd}" data-f="${f}" data-ty="${fc[0]}" ${!mine||p.g<UPC[lv]?'disabled':''}>${UPC[lv]} gold</button></div>`}).join('')}</div>`}
+   if(lv===0)return `<div class="tl">${im}<span class="grow">Blank · ${UPC[0]}g</span><span class="row" style="gap:4px">${'ADGMH'.split('').map(t=>`<button class="pm" data-act="up" data-d="${U.upd}" data-f="${f}" data-ty="${t}" ${!shopOk||p.g<UPC[0]?'disabled':''} aria-label="Make ${FN[t]}"><img src="${icon(t)}" style="width:22px;height:22px" alt=""></button>`).join('')}</span></div>`;
+   return `<div class="tl">${im}<span class="grow">${FN[fc[0]]} ${lv} → ${lv+1}</span><button class="btn sm" data-act="up" data-d="${U.upd}" data-f="${f}" data-ty="${fc[0]}" ${!shopOk||p.g<UPC[lv]?'disabled':''}>${UPC[lv]} gold</button></div>`}).join('')}</div>`}
   h=mpanel('Upgrade die faces · '+p.g+' gold',body)}
  if(el.innerHTML!==h){const sc=el.querySelector('.mpanel')?.scrollTop||0,sx=el.querySelector('.hand')?.scrollLeft||0;el.innerHTML=h;const mp=el.querySelector('.mpanel');if(mp)mp.scrollTop=sc;const hd=el.querySelector('.hand');if(hd)hd.scrollLeft=sx}el.style.display='grid'}
-function aim(o,ci,all){const me=myIdx(),p=S&&S.P[me];if(!p||S.ph!=='attack'||p.rd||!p.al)return;const q=S.P[o];if(!q||o===me||!q.al)return;
+function aim(o,ci,all,amt,die){const me=myIdx(),p=S&&S.P[me];if(!p||S.ph!=='attack'||p.rd||!p.al)return;const q=S.P[o];if(!q||o===me||!q.al)return;
  if(ci>=0){const c=q.c[ci];if(!c)return;if(c[2]){toast(card(c[0]).n+' is summoning and can’t be targeted yet');return}if(c[1]<=0)return}
  const left=p.st[0]-sumAsg();if(left<=0){toast(p.st[0]?'All attack aimed. Undo or lock in.':'You rolled no attack this round');return}
- const k=o+':'+ci,n=all?left:1;U.asg[k]=(U.asg[k]||0)+n;U.ah.push([k,n]);sfx('click');render()}
+ const k=o+':'+ci,n=amt>0?Math.min(amt,left):all?left:1;U.asg[k]=(U.asg[k]||0)+n;U.ah.push([k,n,die]);if(die!==undefined)U.dused.add(die);sfx('click');render();return true}
 const GUIDE=[
  ['roll','Roll','Tap your dice on the table (or the Roll button) to throw every die in your dice deck. Everyone rolls in this phase, and every result is visible to all players.'],
  ['reroll','Reroll','Tap your dice on the table to mark them (they lift up), then tap Reroll or Keep all dice. You get one reroll. Your picks stay hidden until every player locks in, then all rerolls are revealed together.'],
  ['cast','Cast','Spend this round’s mana on cards in your hand: press a glowing card in your hand and drag it up onto the table, then let go. You can also tap a card and press Cast. Unspent mana is lost. New creatures are summoning this round: they can’t attack, block or be targeted until next round. Potions work at once, then go to the exhaust pile.'],
- ['attack','Attack','Tap a rival (their mat or name plate) or one of their active creatures to aim 1 attack at it; press and hold to aim all your remaining attack. Badges on the table show where it’s going. Undo and Clear fix mistakes, then Lock in. Damage aimed at a player hits their active creatures first. Each player’s defense blocks incoming damage for them and their creatures. Unassigned attack goes to your first target. Then surviving creatures strike. The killing blow on a creature earns its gold bounty.'],
+ ['attack','Attack','Drag one of your attack dice from your mat onto a rival or one of their active creatures to aim that die’s attack there. Or use the + and − buttons beside each target (All sends everything you have left). Drag one of your creatures onto a target to pick what it strikes, or press Change. You can also tap a target to aim 1 attack, or press and hold to aim all of it. Badges on the table show where it’s going. Undo and Clear fix mistakes, then Lock in. Damage aimed at a player hits their active creatures first. Each player’s defense blocks incoming damage for them and their creatures. Unassigned attack goes to your first target. Then surviving creatures strike. The killing blow on a creature earns its gold bounty.'],
  ['init','Initiative','Everyone collects rolled gold plus 1. Then tap your red initiative die on the table to set the shop order, highest first (ties go to the player with less HP). Before rolling you can pay gold to upgrade it: +1 on every face, up to +3.'],
- ['buy','Buy','Players shop one at a time in initiative order. On your turn, tap a shop card in the middle of the table to buy it into your hand (max 5), or use the Cards, Dice and Upgrade buttons. You can buy, new dice (max 12), die face upgrades (blank faces become any type at level 1, others go up a level to max 3, costing 2, 3 or 5 gold) or initiative upgrades. Tap a card in your hand to discard it. Tap Done shopping to pass the turn. The shop gains 3 cards each round and holds 6 at most; the oldest leave first.']];
+ ['buy','Buy','Everyone shops at the same time. Use Dice and Upgrade to buy new dice (max 12), die face upgrades (blank faces become any type at level 1, others go up a level to max 3, costing 2, 3 or 5 gold) or initiative upgrades. Market cards are picked one player at a time in initiative order: on your card pick, tap a card in the middle of the table to buy it into your hand (max 5), then tap Pass card pick to hand the market to the next player while you keep shopping for dice. Tap a card in your hand to discard it. Tap Done shopping when you’re finished; the round ends when everyone is done. The shop gains 3 cards each round and holds 6 at most; the oldest leave first.']];
 function renderGuide(){const inGame=mode!=='home'&&!!S;$('#gbtn').hidden=!inGame||$('#guide').classList.contains('on');if(!inGame){$('#guide').classList.remove('on');return}
  $('#gbody').innerHTML=GUIDE.map(([k,t,d])=>`<div class="gs ${S.ph===k?'on':''}"><b>${t}</b><p>${d}</p></div>`).join('')+`<div class="gs"><b>Winning</b><p>Everyone starts with ${MAXHP} HP and a Guardian Totem. From round ${FURY} the arena’s fury burns every player for 1 more damage each round. The last duelist standing wins.</p></div>`;}
 function toggleGuide(force){const g=$('#guide'),on=force!==undefined?force:!g.classList.contains('on');g.classList.toggle('on',on);g.setAttribute('aria-hidden',String(!on));$('#gbtn').setAttribute('aria-expanded',String(on));renderGuide();if(on)g.querySelector('.gs.on')?.scrollIntoView({block:'nearest'})}
@@ -754,13 +811,19 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
  else if(a==='roll')send({t:'ready'});
  else if(a==='tog'){const k=+v.k;U.sel.has(k)?U.sel.delete(k):U.sel.add(k);render()}
  else if(a==='rr')send({t:'ready',sel:[...U.sel]});
- else if(a==='ready'){if(S.ph==='attack')send({t:'ready',asg:Object.entries(U.asg).filter(([,n])=>n>0).map(([k,n])=>{const[o,c]=k.split(':').map(Number);return[o,c,n]})});else send({t:'ready'})}
+ else if(a==='ready'){if(S.ph==='attack')send({t:'ready',asg:Object.entries(U.asg).filter(([,n])=>n>0).map(([k,n])=>{const[o,c]=k.split(':').map(Number);return[o,c,n]}),ct:U.ct});else send({t:'ready'})}
  else if(a==='iup')send({t:'iup'});
  else if(a==='cast'){closeModal();send({t:'cast',h:+v.h,k:v.k})}
  else if(a==='hcard'){if(Date.now()-(U.dragEnd||0)>350)openModal('hand|'+v.h+'|'+v.k)}
  else if(a==='aim')aim(+v.o,+v.c,false);
- else if(a==='undo'){const l=U.ah.pop();if(l){U.asg[l[0]]=Math.max(0,(U.asg[l[0]]||0)-l[1]);render()}}
- else if(a==='asgclr'){U.asg={};U.ah=[];render()}
+ else if(a==='undo'){const l=U.ah.pop();if(l){if(l[0]==='ct'){if(l[2])U.ct[l[1]]=l[2];else delete U.ct[l[1]]}else{U.asg[l[0]]=Math.max(0,(U.asg[l[0]]||0)-l[1]);if(l[2]!==undefined)U.dused.delete(l[2])}render()}}
+ else if(a==='asg+')aim(+v.o,+v.c,false);
+ else if(a==='asgall')aim(+v.o,+v.c,true);
+ else if(a==='asg-'){const k=v.o+':'+v.c;if(U.asg[k]>0){U.asg[k]--;for(let n=U.ah.length-1;n>=0;n--){if(U.ah[n][0]===k){U.ah[n][1]--;if(U.ah[n][1]<=0){if(U.ah[n][2]!==undefined)U.dused.delete(U.ah[n][2]);U.ah.splice(n,1)}break}}render()}}
+ else if(a==='ctnext')cycleCt(+v.j);
+ else if(a==='passc')send({t:'pass'});
+ else if(a==='apt'){U.aHide=!U.aHide;render()}
+ else if(a==='asgclr'){U.asg={};U.ah=[];U.ct={};U.dused=new Set();render()}
  else if(a==='tab'){U.tab=v.k;render()}
  else if(a==='bd')send({t:'bd',k:v.k});
  else if(a==='bc'){if(v.x)closeModal();send({t:'bc',m:+v.m,k:v.k})}
@@ -849,18 +912,22 @@ function sync3D(){if(!R3||!S)return;const T=R3.T,n=S.P.length,me=Math.max(0,myId
     if(c[2]){const r=new T.Mesh(new T.PlaneGeometry(1.46,1.97),new T.MeshBasicMaterial({color:'#a77bff',transparent:true,opacity:.75}));r.rotation.x=-Math.PI/2;r.position.set(m.position.x,.02,-1.85);st.crit.add(r)}});st.cSig=cSig}
   const showSt=['cast','attack','init','buy'].includes(S.ph);const line2=S.ph==='lobby'?null:p.al?[['H',p.hp],['G',p.g],['',p.h.length+' cards']].concat(showSt?[['A',p.st[0]],['D',p.st[1]]]:[]):[['','Fallen']];
   const turn=S.ph==='buy'&&S.bo[S.bt]===i;
-  const pSig=JSON.stringify([p.n,line2,p.rd,turn,S.ph]);if(pSig!==st.pSig){if(st.plate){disposeObj(st.plate);st.grp.remove(st.plate)}const tick=['roll','reroll','cast','attack','init'].includes(S.ph)&&p.rd&&p.al;st.plate=sprite(labelCanvas([(turn?'Shopping: ':'')+p.n+(tick?' ✓':''),line2],turn?'#e9b640':PCOL[i]),3.6,.9);st.plate.position.set(0,1.6,2.95);st.plate.userData.tap={t:'seat',i};st.grp.add(st.plate);st.pSig=pSig}});
+  const pSig=JSON.stringify([p.n,line2,p.rd,turn,S.ph]);if(pSig!==st.pSig){if(st.plate){disposeObj(st.plate);st.grp.remove(st.plate)}const tick=['roll','reroll','cast','attack','init'].includes(S.ph)&&p.rd&&p.al;st.plate=sprite(labelCanvas([(turn?'Card pick: ':'')+p.n+(tick?' ✓':''),line2],turn?'#e9b640':PCOL[i]),3.6,.9);st.plate.position.set(0,1.6,2.95);st.plate.userData.tap={t:'seat',i};st.grp.add(st.plate);st.pSig=pSig}});
  const mkSig=S.mk.join();if(mkSig!==G.mkSig){if(G.mk){disposeObj(G.mk);R3.root.remove(G.mk)}G.mk=new T.Group();S.mk.forEach((k,m)=>{const ms=cardMesh(cardCanvas(k,card(k).hp),{t:'mk',k,m},1);ms.rotation.x=-Math.PI/2;ms.position.set((m%3-1)*1.55,.03,(Math.floor(m/3)-(S.mk.length>3?.5:0))*2.05);ms.scale.set(1.1,1.1,1);G.mk.add(ms)});R3.root.add(G.mk);G.mkSig=mkSig}
  const pSig=[S.dk,S.dc,S.ex].join();if(pSig!==G.pileSig){if(G.piles){disposeObj(G.piles);R3.root.remove(G.piles)}G.piles=new T.Group();
   [[S.dk,'dk','Deck',-3.35,0],[S.dc,'dc','Discard',3.35,-1],[S.ex,'ex','Exhaust',3.35,1.15]].forEach(([cnt,kind,lab,x,z])=>{const hgt=Math.max(.03,cnt*.025);const bx=new T.Mesh(new T.BoxGeometry(1.25,hgt,1.75),[side(),side(),new T.MeshStandardMaterial({map:tex(backCanvas(kind)),roughness:.7}),side(),side(),side()]);bx.position.set(x,hgt/2,z);bx.castShadow=true;G.piles.add(bx);
    const s=sprite(labelCanvas([lab+' '+cnt]),1.9,.48);s.position.set(x,hgt+.55,z);G.piles.add(s)});R3.root.add(G.piles);G.pileSig=pSig}
  syncBadges();
  G.tap=[];G.seats.forEach(s=>{s.dice.forEach(d=>G.tap.push(d));G.tap.push(s.idie);G.tap.push(s.mat);if(s.plate)G.tap.push(s.plate);s.crit.children.forEach(c=>c.userData.tap&&G.tap.push(c))});if(G.mk)G.mk.children.forEach(c=>G.tap.push(c));}
-function badgeCanvas(n){const c=canvas(220,110),x=c.getContext('2d');x.fillStyle='rgba(150,20,32,.92)';rr(x,6,6,208,98,49);x.fill();x.strokeStyle='#ffd36b';x.lineWidth=5;rr(x,6,6,208,98,49);x.stroke();glyph(x,'A',62,56,62,'#fff1d6');x.fillStyle='#fff';x.font='800 60px Alegreya Sans, sans-serif';x.textBaseline='middle';x.fillText(String(n),104,58);return c}
-function syncBadges(){const T=R3.T,sig=S.ph==='attack'?JSON.stringify(U.asg)+G.n:'';if(sig===G.bSig)return;G.bSig=sig;if(G.bd){disposeObj(G.bd);R3.root.remove(G.bd)}G.bd=new T.Group();R3.root.add(G.bd);if(!sig)return;
+function badgeCanvas(n,bg){const c=canvas(220,110),x=c.getContext('2d');x.fillStyle=bg||'rgba(150,20,32,.92)';rr(x,6,6,208,98,49);x.fill();x.strokeStyle='#ffd36b';x.lineWidth=5;rr(x,6,6,208,98,49);x.stroke();glyph(x,'A',62,56,62,'#fff1d6');x.fillStyle='#fff';x.font='800 60px Alegreya Sans, sans-serif';x.textBaseline='middle';x.fillText(String(n),104,58);return c}
+function syncBadges(){const T=R3.T,sig=S.ph==='attack'?JSON.stringify(U.asg)+JSON.stringify(U.ct)+G.n:'';if(sig===G.bSig)return;G.bSig=sig;if(G.bd){disposeObj(G.bd);R3.root.remove(G.bd)}G.bd=new T.Group();R3.root.add(G.bd);if(!sig)return;
  for(const [k,n] of Object.entries(U.asg)){if(!(n>0))continue;const[o,ci]=k.split(':').map(Number),st=G.seats[o];if(!st)continue;const v=new T.Vector3();
   if(ci>=0){const m=st.crit.children.find(c=>c.userData.tap&&c.userData.tap.j===ci);if(!m)continue;m.getWorldPosition(v);v.y+=.9}else{st.grp.localToWorld(v.set(0,1.1,.4))}
-  const s=sprite(badgeCanvas(n),1.3,.65);s.position.copy(v);s.renderOrder=5;G.bd.add(s)}}
+  const s=sprite(badgeCanvas(n),1.3,.65);s.position.copy(v);s.renderOrder=5;G.bd.add(s)}
+ const mp=S.P[myIdx()];let cn=0;
+ for(const [j,tg] of Object.entries(U.ct)){const c=mp&&mp.c[+j];if(!c||!tg)continue;const st=G.seats[tg[0]];if(!st)continue;const v=new T.Vector3();
+  if(tg[1]>=0){const m=st.crit.children.find(x=>x.userData.tap&&x.userData.tap.j===tg[1]);if(!m)continue;m.getWorldPosition(v);v.y+=1.6+cn*.25}else{st.grp.localToWorld(v.set(0,1.85+cn*.25,.4))}
+  const s=sprite(badgeCanvas(card(c[0]).a,'rgba(83,51,138,.95)'),1.1,.55);s.position.copy(v);s.renderOrder=5;G.bd.add(s);cn++}}
 function loop(){requestAnimationFrame(loop);if(!R3)return;try{frame()}catch(e){console.error('3D',e)}}
 function frame(){const T=R3.T,now=performance.now();
  G.anims=G.anims.filter(a=>{const m=a.m,t=Math.min(1,Math.max(0,(now-a.t0)/a.dur));const e=1-Math.pow(1-t,3);const q=m.userData.qT.clone().multiply(new T.Quaternion().setFromAxisAngle(a.ax,a.turns*Math.PI*2*(1-e)));m.quaternion.copy(q);m.position.copy(a.p0).lerp(m.userData.base,e);m.position.y+=Math.sin(Math.PI*t)*1.6*(1-t*.6);return t<1});
@@ -875,18 +942,43 @@ function resize(){if(!R3)return;const W=innerWidth,Hh=innerHeight;R3.rd.setSize(
  R3.dist=Math.min(70,Math.max(13/hh*.78,12.5/(tv*vis*Hh/F*1.6),20));}
 addEventListener('resize',resize);
 {const ro=new ResizeObserver(()=>resize());ro.observe($('#hud'));ro.observe($('#hand'))}
+let AD=null;
+function scr(obj){const v=new R3.T.Vector3();obj.getWorldPosition(v);v.project(R3.cam);const r=R3.rd.domElement.getBoundingClientRect();return[(v.x+1)/2*r.width+r.left,(1-v.y)/2*r.height+r.top]}
+function atkSource(x,y){if(!S||!R3||S.ph!=='attack')return null;const me=myIdx(),p=S.P[me];if(!p||!p.al||p.rd)return null;const o=pick(x,y);if(!o)return null;const t=o.userData.tap;if(t.i!==me)return null;
+ if(t.t==='die'){const fc=face(p.d[t.k],p.f[t.k]);if(fc[0]!=='A')return null;return{kind:'die',k:t.k,v:+fc[1],obj:o}}
+ if(t.t==='cr'&&p.c[t.j])return{kind:'cr',j:t.j,obj:o};return null}
+function dropTarget(x,y){const me=myIdx(),o=pick(x,y);if(!o)return null;const t=o.userData.tap;if(t.i===undefined||t.i===me)return null;const q=S.P[t.i];if(!q||!q.al)return null;
+ if(t.t==='cr'){const c=q.c[t.j];if(!c||c[1]<=0)return null;if(c[2])return{bad:card(c[0]).n+' is summoning and can’t be targeted yet'};return{o:t.i,ci:t.j,n:card(c[0]).n}}
+ return{o:t.i,ci:-1,n:q.n}}
+function srcProblem(){const p=S.P[myIdx()];if(!p)return 'You are not seated';if(AD.kind==='die'){if(U.dused.has(AD.k))return 'That die is already aimed. Undo to move it';if(p.st[0]-sumAsg()<=0)return 'All your attack is aimed';return ''}
+ const c=p.c[AD.j];if(!c)return 'That creature is gone';const C=card(c[0]);if(c[2])return C.n+' is summoning and can’t attack yet';if(!C.a)return C.n+' never attacks';return ''}
+function dieShare(){const p=S.P[myIdx()],left=p.st[0]-sumAsg();const unused=p.d.filter((d,k)=>face(d,p.f[k])[0]==='A'&&!U.dused.has(k)).length;return unused<=1?left:Math.min(AD.v,left)}
+function atkMove(x,y){if(!AD.go){if(Math.hypot(x-AD.x0,y-AD.y0)<10)return;AD.go=true;$('#arrow').hidden=false;$('#alab').hidden=false}
+ const [sx,sy]=scr(AD.obj),l=$('#aln');l.setAttribute('x1',sx);l.setAttribute('y1',sy);l.setAttribute('x2',x);l.setAttribute('y2',y);
+ const pr=srcProblem(),d=pr?null:dropTarget(x,y),lab=$('#alab');lab.style.left=x+'px';lab.style.top=y+'px';
+ lab.textContent=pr||(d?(d.bad||(AD.kind==='die'?'Hit '+d.n+' for '+dieShare():'Strike '+d.n)):'Drop on a rival or their creature');}
+function atkEnd(x,y,ok){const d0=AD;$('#arrow').hidden=true;$('#alab').hidden=true;
+ if(!d0.go){AD=null;if(ok)tap(x,y,false);return}
+ if(!ok){AD=null;return}
+ const pr=srcProblem(),d=pr?null:dropTarget(x,y);
+ if(pr)toast(pr);else if(!d)toast('Drop it on a rival or one of their creatures');else if(d.bad)toast(d.bad);
+ else if(d0.kind==='die')aim(d.o,d.ci,false,dieShare(),d0.k);
+ else setCt(d0.j,[d.o,d.ci]);
+ AD=null}
 function controls(cv){const pts=new Map();let pinch=0,moved=0,t0=0;
  let lp=null,lpDone=false;
- cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;t0=performance.now();lpDone=false;clearTimeout(lp);if(pts.size===1){const x=e.clientX,y=e.clientY;lp=setTimeout(()=>{if(pts.size===1&&moved<10){lpDone=true;tap(x,y,true)}},480)}if(pts.size===2){clearTimeout(lp);const[a,b]=[...pts.values()];pinch=Math.hypot(a.x-b.x,a.y-b.y)}});
- cv.addEventListener('pointermove',e=>{const p=pts.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);p.x=e.clientX;p.y=e.clientY;
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);if(!pts.size&&!AD){const src=atkSource(e.clientX,e.clientY);if(src){AD=Object.assign(src,{id:e.pointerId,x0:e.clientX,y0:e.clientY,go:false});return}}pts.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;t0=performance.now();lpDone=false;clearTimeout(lp);if(pts.size===1){const x=e.clientX,y=e.clientY;lp=setTimeout(()=>{if(pts.size===1&&moved<10){lpDone=true;tap(x,y,true)}},480)}if(pts.size===2){clearTimeout(lp);const[a,b]=[...pts.values()];pinch=Math.hypot(a.x-b.x,a.y-b.y)}});
+ cv.addEventListener('pointermove',e=>{if(AD&&e.pointerId===AD.id){atkMove(e.clientX,e.clientY);return}const p=pts.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;moved+=Math.abs(dx)+Math.abs(dy);p.x=e.clientX;p.y=e.clientY;
   if(pts.size===1){R3.az-=dx*.006;R3.el=Math.min(1.45,Math.max(.4,R3.el+dy*.004))}else if(pts.size===2){const[a,b]=[...pts.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);if(pinch)R3.zoom=Math.min(1.7,Math.max(.45,R3.zoom*pinch/d));pinch=d}});
- const end=e=>{const was=pts.size;pts.delete(e.pointerId);clearTimeout(lp);if(was===1&&moved<10&&!lpDone&&performance.now()-t0<480)tap(e.clientX,e.clientY,false)};
- cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',e=>pts.delete(e.pointerId));
+ const end=e=>{if(AD&&e.pointerId===AD.id){atkEnd(e.clientX,e.clientY,true);return}const was=pts.size;pts.delete(e.pointerId);clearTimeout(lp);if(was===1&&moved<10&&!lpDone&&performance.now()-t0<480)tap(e.clientX,e.clientY,false)};
+ cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',e=>{if(AD&&e.pointerId===AD.id){atkEnd(e.clientX,e.clientY,false);return}pts.delete(e.pointerId)});
  cv.addEventListener('wheel',e=>{e.preventDefault();R3.zoom=Math.min(1.7,Math.max(.45,R3.zoom*(1+e.deltaY*.001)))},{passive:false});
  cv.addEventListener('dblclick',()=>{R3.az=0;R3.el=1;R3.zoom=1});}
-function tap(x,y,hold){if(!S||!R3)return;const T=R3.T,r=R3.rd.domElement.getBoundingClientRect();R3.ray.setFromCamera({x:(x-r.left)/r.width*2-1,y:-(y-r.top)/r.height*2+1},R3.cam);
+function pick(x,y){const T=R3.T,r=R3.rd.domElement.getBoundingClientRect();R3.ray.setFromCamera({x:(x-r.left)/r.width*2-1,y:-(y-r.top)/r.height*2+1},R3.cam);
  let obj=(R3.ray.intersectObjects(G.tap,false)[0]||{}).object;
  if(!obj||obj.userData.tap.t==='seat'){const v=new T.Vector3();let bd=40,best=null;for(const o of G.tap){if(o.userData.tap.t==='seat'||!o.visible)continue;o.getWorldPosition(v);v.project(R3.cam);const d=Math.hypot((v.x+1)/2*r.width+r.left-x,(1-v.y)/2*r.height+r.top-y);if(d<bd){bd=d;best=o}}if(best)obj=best}
+ return obj||null}
+function tap(x,y,hold){if(!S||!R3)return;let obj=pick(x,y);
  if(!obj)return;const t=obj.userData.tap,me=myIdx(),p=S.P[me],act=p&&p.al&&!p.rd;
  if(S.ph==='attack'&&act&&t.i!==undefined&&t.i!==me){if(t.t==='cr')aim(t.i,t.j,hold);else aim(t.i,-1,hold);return}
  if(t.t==='die'||t.t==='seat'){
