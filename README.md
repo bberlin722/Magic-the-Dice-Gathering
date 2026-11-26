@@ -2,7 +2,7 @@
 
 A 3D dice-deck dueling game for 2–4 players that runs in the browser. Build a dice deck, summon creatures, cast potions and be the last duelist standing.
 
-**Play:** https://bberlin722.github.io/magic-the-dice-gathering/
+**Play:** https://bberlin722.github.io/Magic-the-Dice-Gathering/
 
 ## Modes
 
